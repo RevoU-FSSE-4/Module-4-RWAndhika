@@ -1,5 +1,4 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
@@ -9,9 +8,6 @@ function App() {
 
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [show, setShow] = useState<boolean>(true);
-
-  // const pages = [<FirstPage />, <SecondPage />, <LastPage />]
-
   const [data, setData] = useState({
     name: "",
     email: "",
@@ -24,26 +20,16 @@ function App() {
     password: ""
   });
 
-  // const [name, setName] = useState<string>("");
-  // const [email, setEmail] = useState<string>("");
-  // const [dob, setDob] = useState<string>("");
-  // const [street, setStreet] = useState<string>("");
-  // const [city, setCity] = useState<string>("");
-  // const [state, setState] = useState<string>("");
-  // const [zip, setZip] = useState<string>("");
-  // const [username, setUsername] = useState<string>("");
-  // const [password, setPassword] = useState<string>("");
-
   const initialValues = {
-    name: "",
-    email: "",
-    dob: "",
-    street: "",
-    city: "",
-    state: "",
-    zip: "",
-    username: "",
-    password: ""
+    name: data.name,
+    email: data.email,
+    dob: data.dob,
+    street: data.street,
+    city: data.city,
+    state: data.state,
+    zip: data.zip,
+    username: data.username,
+    password: data.password
   };
 
   const firstPageSchema = Yup.object().shape({
@@ -76,7 +62,7 @@ function App() {
     username: Yup.string().required("required"),
 
     password: Yup.string().required("required")
-      .required("Please enter a password")
+      .required("Please enter a password (8 char min. , 1 digit, 1 lowercase, 1 uppercase)")
       .min(8, "Password must have at least 8 characters")
       .matches(/[0-9]/, "Password must have at least 1 digit character")
       .matches(/[a-z]/, "Password must have at least 1 lowercase character")
@@ -84,7 +70,7 @@ function App() {
   });
 
   const handleNext = (newData: any) => {
-    console.log(currentPage);
+    console.log(data);
     setData(prev => ({ ...prev, ...newData }))
 
     if (currentPage === 0) {
@@ -140,7 +126,21 @@ function App() {
                 <Field type="date" id="dob" name="dob" placeholder="Enter your date of birth" />
                 <ErrorMessage name="dob" component="div" />
               </div>
-              {/* <button type='submit'>Next</button> */}
+              <div className="mt-10 flex justify-between gap-10">
+                  <button
+                    type="button"
+                    className={`${show ? 'hidden' : ''}  block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                    onClick={handlePrev}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="submit"
+                    className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Next
+                  </button>
+                </div>
             </Form>
           </Formik>
         </>}
@@ -149,7 +149,7 @@ function App() {
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Account Information</h2>
             <Formik
               initialValues={initialValues}
-              validationSchema={firstPageSchema}
+              validationSchema={secondPageSchema}
               onSubmit={handleNext}
             >
               <Form className="mx-auto mt-16 max-w-xl sm:mt-20">
@@ -177,7 +177,21 @@ function App() {
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
                   <ErrorMessage name='zip' component="div" />
                 </div>
-                {/* <button type='submit'>Next</button> */}
+                <div className="mt-10 flex justify-between gap-10">
+                  <button
+                    type="button"
+                    className={`${show ? 'hidden' : ''}  block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                    onClick={handlePrev}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="submit"
+                    className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Next
+                  </button>
+                </div>
               </Form>
             </Formik>
           </>
@@ -187,7 +201,7 @@ function App() {
             <h2 className="text-3xl font-bold tracking-tight text-gray-900 sm:text-4xl">Personal Information</h2>
             <Formik
               initialValues={initialValues}
-              validationSchema={firstPageSchema}
+              validationSchema={lastPageSchema}
               onSubmit={handleNext}
             >
               <Form className="mx-auto mt-16 max-w-xl sm:mt-20">
@@ -201,29 +215,29 @@ function App() {
                   <label htmlFor="password">Password: </label>
                   <Field type="password" id="password" name="password" placeholder="Enter your password"
                     className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" />
-                  <ErrorMessage name="email" component="div" />
+                  <ErrorMessage name="password" component="div" />
                 </div>
-                {/* <button type='submit'>Next</button> */}
+                <div className="mt-10 flex justify-between gap-10">
+                  <button
+                    type="button"
+                    className={`${show ? 'hidden' : ''}  block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
+                    onClick={handlePrev}
+                  >
+                    Previous
+                  </button>
+                  <button
+                    type="submit"
+                    className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                  >
+                    Next
+                  </button>
+                </div>
               </Form>
             </Formik>
           </>
         )}
       </div>
       <div className="mt-10 flex justify-between gap-10">
-        <button
-          type="button"
-          className={`${show? 'hidden' : ''}  block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
-          onClick={handlePrev}
-        >
-          Previous
-        </button>
-        <button
-          type="submit"
-          className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-          onClick={handleNext}
-        >
-          Next
-        </button>
       </div>
     </div>
   );
