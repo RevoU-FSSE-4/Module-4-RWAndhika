@@ -8,6 +8,8 @@ import { useState } from 'react';
 function App() {
 
   const [currentPage, setCurrentPage] = useState<number>(0);
+  const [show, setShow] = useState<boolean>(true);
+
   // const pages = [<FirstPage />, <SecondPage />, <LastPage />]
 
   const [data, setData] = useState({
@@ -82,13 +84,32 @@ function App() {
   });
 
   const handleNext = (newData: any) => {
+    console.log(currentPage);
     setData(prev => ({ ...prev, ...newData }))
-    setCurrentPage(prev => prev + 1)
+
+    if (currentPage === 0) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
+
+    if (currentPage === 2) {
+      alert("Submit Success");
+    } else {
+      setCurrentPage(prev => prev + 1);
+      setShow(false);
+    }
   }
 
   const handlePrev = (newData: any) => {
+    console.log(currentPage);
     setData(prev => ({ ...prev, ...newData }))
     setCurrentPage(prev => prev - 1)
+    if (currentPage === 1) {
+      setShow(true);
+    } else {
+      setShow(false);
+    }
   }
 
   return (
@@ -191,7 +212,7 @@ function App() {
       <div className="mt-10 flex justify-between gap-10">
         <button
           type="button"
-          className="block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className={`${show? 'hidden' : ''}  block w-full rounded-md bg-indigo-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600`}
           onClick={handlePrev}
         >
           Previous
