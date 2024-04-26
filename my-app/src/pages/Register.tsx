@@ -7,18 +7,6 @@ const Register = () => {
 
   const navigate = useNavigate();
 
-  // const [data, setData] = useState({
-  //   name: "",
-  //   email: "",
-  //   dob: "",
-  //   street: "",
-  //   city: "",
-  //   state: "",
-  //   zip: "",
-  //   username: "",
-  //   password: ""
-  // });
-
   const initialValues = {
     name: "",
     email: "",
@@ -36,9 +24,7 @@ const Register = () => {
     password: Yup.string().required("required")
       .required("Please enter a password (8 char min. , 1 digit, 1 lowercase, 1 uppercase)")
       .min(8, "Password must have at least 8 characters")
-      // .matches(/[0-9]/, "Password must have at least 1 digit character")
       .matches(/[a-z]/, "Password must have at least 1 lowercase character"),
-      // .matches(/[A-Z]/, "Password must have at least 1 uppercase character"),
   });
 
   const handleRegister = async (data: any) => {
@@ -68,35 +54,6 @@ const Register = () => {
       alert(error)
     }
   }
-
-  const handleNext = (newData: any) => {
-    // console.log(data);
-    // setData(prev => ({ ...prev, ...newData }))
-
-    // if (currentPage === 0) {
-    //   setShow(true);
-    // } else {
-    //   setShow(false);
-    // }
-
-    // if (currentPage === 2) {
-    //   alert("Submit Success");
-    // } else {
-    //   setCurrentPage(prev => prev + 1);
-    //   setShow(false);
-    // }
-  }
-
-  // const handlePrev = (newData: any) => {
-  //   console.log(currentPage);
-  //   setData(prev => ({ ...prev, ...newData }))
-  //   setCurrentPage(prev => prev - 1)
-  //   if (currentPage === 1) {
-  //     setShow(true);
-  //   } else {
-  //     setShow(false);
-  //   }
-  // }
 
   return (
     <div className="isolate bg-white px-6 py-24 sm:py-32 lg:px-8">

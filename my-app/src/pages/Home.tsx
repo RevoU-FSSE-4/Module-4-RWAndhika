@@ -6,21 +6,6 @@ import { useNavigate } from 'react-router-dom';
 
 const Home = () => {
 
-    const [email, setEmail] = useState<string>("");
-    const [password, setPassword] = useState<string>("");
-
-    // const [data, setData] = useState({
-    //     name: "",
-    //     email: "",
-    //     dob: "",
-    //     street: "",
-    //     city: "",
-    //     state: "",
-    //     zip: "",
-    //     username: "",
-    //     password: ""
-    // });
-
     const initialValues = {
         email: "",
         password: ""
@@ -34,18 +19,13 @@ const Home = () => {
         password: Yup.string().required("required")
     });
 
-    const handleData = (data: any) => {
-        setEmail(data.email);
-        setPassword(data.password);
-      }
-
-    const handleLogin = async () => {
+    const handleLogin = async (data: any) => {
         const response = await fetch('https://library-crud-sample.vercel.app/api/user/login', {
             method: 'POST',
             headers: {
                 "Content-Type": "application/json",
               },
-            body: JSON.stringify({ email: email, password: password }),
+            body: JSON.stringify({ email: data.email, password: data.password }),
             redirect: 'follow'
         });
 
@@ -53,19 +33,21 @@ const Home = () => {
 
         try {
             if (!response.ok) {
-                alert('Failed to login');
+                throw new Error('Login failed');
             } else {
-                console.log('response success', result);
-                localStorage.setItem('token', result.token);
-                alert('Login succeeded');
-                navigate('/dashboard');
+                setTimeout(() => {
+                    console.log('response success', result);
+                    localStorage.setItem('token', result.token);
+                    alert('Login succeeded');
+                    navigate('/dashboard');
+                }, 1000);
             }
         }
 
         catch (error) {
-            alert(error);
+            console.log(error);
         }
-    }
+    };
 
     return (
         <div className="isolate bg-white px-6 py-8 sm:py-12 lg:px-8">
@@ -80,9 +62,8 @@ const Home = () => {
                           email: values.email,
                           password: values.password
                         };
-                        handleData(data);
-                        
-                        if (values.email && values.password) handleLogin();
+
+                        if (values.email && values.password) handleLogin(data);
                       }}
                 >
                     <Form className="mx-auto mt-4 max-w-xl sm:mt-8">
